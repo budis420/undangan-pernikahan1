@@ -68,10 +68,10 @@
 </section>
 
 <!-- Musik -->
-<audio id="bg-music" src="assets/music/Bermuara.mp3" autoplay loop></audio>
+<audio id="bg-music" src="assets/music/Bermuara.mp3" loop></audio>
 
 <!-- Logo Musik Berputar -->
-<div id="music-icon" onclick="toggleMusic()">
+<div id="music-icon" onclick="toggleMusic()" style="cursor: pointer;">
   <img src="assets/images/pa.png" alt="Music" />
 </div>
 
@@ -81,10 +81,40 @@
 </div>
 
 <!-- Script -->
-<script src="script.js"></script>
-
-<!-- Tambahan script salam tamu -->
 <script>
+  // Musik
+  const music = document.getElementById('bg-music');
+  const icon = document.getElementById('music-icon');
+  const tapHint = document.getElementById('tap-to-play');
+  let isPlaying = false;
+
+  function toggleMusic() {
+    if (!isPlaying) {
+      music.play().then(() => {
+        isPlaying = true;
+        icon.classList.add('playing');
+        tapHint.style.display = 'none';
+      }).catch((e) => {
+        console.log("Gagal memutar musik:", e);
+      });
+    } else {
+      music.pause();
+      isPlaying = false;
+      icon.classList.remove('playing');
+      tapHint.style.display = 'block';
+    }
+  }
+
+  // Salin Rekening
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Nomor rekening disalin: " + text);
+    }).catch(err => {
+      console.error("Gagal menyalin: ", err);
+    });
+  }
+
+  // Salam tamu
   function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);

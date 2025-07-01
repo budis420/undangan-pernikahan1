@@ -128,13 +128,15 @@ body {
   cursor: pointer;
 }
 
-#music-icon.putar {
-  animation: spin 5s linear infinite;
-}
-
 #music-icon img {
   width: 100%;
   height: auto;
+  transition: transform 0.3s ease;
+}
+
+/* Animasi ketika musik diputar */
+#music-icon.playing img {
+  animation: spin 3s linear infinite;
 }
 
 @keyframes spin {
@@ -142,7 +144,7 @@ body {
   to   { transform: rotate(360deg); }
 }
 
-/* Animasi "Ketuk untuk memutar musik" */
+/* Petunjuk Ketuk */
 .tap-hint {
   position: fixed;
   bottom: 100px;
@@ -161,6 +163,18 @@ body {
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
+}
+
+/* Salam tamu pribadi */
+#salam-tamu {
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
 }
 
 /* Responsif untuk HP */
@@ -203,22 +217,7 @@ body {
     padding: 0.6rem 1.2rem;
     bottom: 80px;
   }
-}
 
-/* Salam tamu pribadi */
-#salam-tamu {
-  font-size: 1rem;
-  margin-top: 1.5rem;
-  font-weight: 600;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
-}
-
-/* Responsif salam tamu */
-@media (max-width: 600px) {
   #salam-tamu {
     font-size: 0.95rem;
     padding: 0.4rem 0.8rem;
