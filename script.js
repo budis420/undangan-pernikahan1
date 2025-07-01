@@ -2,7 +2,7 @@
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
     alert("Nomor rekening berhasil disalin: " + text);
-  }).catch(err => {
+  }).catch(() => {
     alert("Gagal menyalin teks");
   });
 }
@@ -13,7 +13,28 @@ function getQueryParam(param) {
   return urlParams.get(param);
 }
 
-// Tampilkan nama tamu jika ada di URL
+// Toggle musik play/pause via ikon
+function toggleMusic() {
+  const audio = document.getElementById("bg-music");
+  const tapHint = document.getElementById("tap-to-play");
+  const musicIcon = document.getElementById("music-icon");
+
+  if (audio.paused) {
+    audio.muted = false;
+    audio.play().then(() => {
+      tapHint.style.display = "none";
+      musicIcon.classList.add("playing");
+    }).catch(() => {
+      console.log("Gagal memutar musik");
+    });
+  } else {
+    audio.pause();
+    musicIcon.classList.remove("playing");
+    tapHint.style.display = "block";
+  }
+}
+
+// DOM Loaded
 document.addEventListener("DOMContentLoaded", () => {
   const namaTamu = getQueryParam("to");
   if (namaTamu) {
@@ -25,31 +46,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const audio = document.getElementById("bg-music");
   const tapHint = document.getElementById("tap-to-play");
+  const musicIcon = document.getElementById("music-icon");
 
-  // Play musik saat user pertama kali klik/tap
-  function startMusic() {
-    if (audio.paused) {
+  // Satu kali klik pertama di mana saja memutar musik
+  function startMusicOnce() {
+    if (audio && audio.paused) {
       audio.muted = false;
-      audio.play().catch(() => {});
+      audio.play().then(() => {
+        if (tapHint) tapHint.style.display = "none";
+        if (musicIcon) musicIcon.classList.add("playing");
+      }).catch(() => {
+        console.log("Autoplay diblokir, harus klik ikon musik.");
+      });
     }
-
-    if (tapHint) tapHint.style.display = "none";
-    document.removeEventListener("click", startMusic);
+    document.removeEventListener("click", startMusicOnce);
   }
 
-  document.addEventListener("click", startMusic);
+  document.addEventListener("click", startMusicOnce);
 });
-
-// Toggle play/pause musik via ikon
-function toggleMusic() {
-  const audio = document.getElementById("bg-music");
-  const tapHint = document.getElementById("tap-to-play");
-
-  if (audio.paused) {
-    audio.muted = false;
-    audio.play().catch(() => {});
-    if (tapHint) tapHint.style.display = "none";
-  } else {
-    audio.pause();
-  }
-}
