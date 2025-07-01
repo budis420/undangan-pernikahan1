@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Generator Link Undangan</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; }
+    input, button { padding: 0.5rem; font-size: 1rem; margin: 0.5rem 0; }
+    .result { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+
+  <h2>Generator Link Undangan</h2>
+  <label>Masukkan Nama Tamu:</label><br/>
+  <input type="text" id="nama" placeholder="Contoh: Andi Saputra" size="40" />
+  <br/>
+  <button onclick="generate()">Buat Link</button>
+
+  <div class="result" id="hasil"></div>
+
+  <script>
+    function generate() {
+      const nama = document.getElementById("nama").value;
+      const encoded = encodeURIComponent(nama.trim());
+      const link = `https://budis420.github.io/undangan-pernikahan/?to=${encoded}`;
+      document.getElementById("hasil").innerHTML =
+        `<p>Link Undangan:</p><a href="${link}" target="_blank">${link}</a>`;
+    }
+  </script>
+
+</body>
+</html>
