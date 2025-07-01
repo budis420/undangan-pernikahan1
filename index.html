@@ -22,14 +22,15 @@
     <h1>Pernikahan</h1>
     <h2>Muh Amin Syarif & Sarina</h2>
 
-    <p id="salam-tamu" class="salam-tamu"></p>
+    <!-- Salam tamu otomatis -->
+    <p id="salam-tamu" class="salam-tamu" style="margin-top: 1rem; font-size: 1rem;"></p>
 
     <p>Tanpa mengurangi rasa hormat,<br/>Kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara Pernikahan Kami.</p>
     <div class="tanggal">06 . 07 . 2025</div>
   </div>
 </section>
 
-<!-- Ayat dan Acara -->
+<!-- Ayat dan Detail Acara -->
 <section class="acara">
   <h2>Petunjuk & Acara</h2>
   <p class="ayat">
@@ -67,50 +68,23 @@
 </section>
 
 <!-- Musik -->
-<audio id="bg-music" src="assets/music/Bermuara.mp3" preload="none" loop></audio>
+<audio id="bg-music" src="assets/music/Bermuara.mp3" autoplay loop></audio>
 
-<!-- Ikon Musik -->
-<div id="music-icon" onclick="toggleMusic()" style="cursor: pointer;">
+<!-- Logo Musik Berputar -->
+<div id="music-icon" onclick="toggleMusic()">
   <img src="assets/images/pa.png" alt="Music" />
 </div>
 
-<!-- Petunjuk -->
+<!-- Petunjuk Ketuk -->
 <div id="tap-to-play" class="tap-hint">
   👆 Ketuk untuk memutar musik
 </div>
 
 <!-- Script -->
+<script src="script.js"></script>
+
+<!-- Tambahan script salam tamu -->
 <script>
-  const music = document.getElementById('bg-music');
-  const icon = document.getElementById('music-icon');
-  const tapHint = document.getElementById('tap-to-play');
-  let isPlaying = false;
-
-  function toggleMusic() {
-    if (!isPlaying) {
-      music.play().then(() => {
-        isPlaying = true;
-        icon.classList.add('playing');
-        tapHint.style.display = 'none';
-      }).catch((e) => {
-        console.log("Gagal memutar musik:", e);
-      });
-    } else {
-      music.pause();
-      isPlaying = false;
-      icon.classList.remove('playing');
-      tapHint.style.display = 'block';
-    }
-  }
-
-  function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-      alert("Nomor rekening disalin: " + text);
-    }).catch(err => {
-      console.error("Gagal menyalin: ", err);
-    });
-  }
-
   function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
@@ -122,22 +96,6 @@
       const salam = document.getElementById("salam-tamu");
       salam.innerText = `Yth. Bapak/Ibu ${decodeURIComponent(namaTamu)}`;
     }
-
-    // Mulai musik saat user klik pertama kali di layar (selain tombol)
-    function allowPlayOnce() {
-      if (!isPlaying) {
-        music.play().then(() => {
-          isPlaying = true;
-          icon.classList.add('playing');
-          tapHint.style.display = 'none';
-        }).catch(() => {
-          console.log("Perlu klik ikon untuk memutar.");
-        });
-      }
-      document.removeEventListener("click", allowPlayOnce);
-    }
-
-    document.addEventListener("click", allowPlayOnce);
   });
 </script>
 

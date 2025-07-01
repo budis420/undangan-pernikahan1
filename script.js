@@ -1,59 +1,55 @@
+// Fungsi salin nomor rekening
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
     alert("Nomor rekening berhasil disalin: " + text);
-  }).catch(() => {
+  }).catch(err => {
     alert("Gagal menyalin teks");
   });
 }
 
+// Fungsi ambil parameter dari URL
 function getQueryParam(param) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(param);
 }
 
+// Tampilkan nama tamu jika ada di URL
+document.addEventListener("DOMContentLoaded", () => {
+  const namaTamu = getQueryParam("to");
+  if (namaTamu) {
+    const salam = document.getElementById("salam-tamu");
+    if (salam) {
+      salam.innerText = `Yth. Bapak/Ibu/Saudara/i ${decodeURIComponent(namaTamu)}`;
+    }
+  }
+
+  const audio = document.getElementById("bg-music");
+  const tapHint = document.getElementById("tap-to-play");
+
+  // Play musik saat user pertama kali klik/tap
+  function startMusic() {
+    if (audio.paused) {
+      audio.muted = false;
+      audio.play().catch(() => {});
+    }
+
+    if (tapHint) tapHint.style.display = "none";
+    document.removeEventListener("click", startMusic);
+  }
+
+  document.addEventListener("click", startMusic);
+});
+
+// Toggle play/pause musik via ikon
 function toggleMusic() {
   const audio = document.getElementById("bg-music");
-  const icon = document.getElementById("music-icon");
   const tapHint = document.getElementById("tap-to-play");
 
   if (audio.paused) {
-    audio.play().then(() => {
-      icon.classList.add("playing");
-      tapHint.style.display = "none";
-    }).catch((err) => {
-      console.error("Gagal memutar musik:", err);
-    });
+    audio.muted = false;
+    audio.play().catch(() => {});
+    if (tapHint) tapHint.style.display = "none";
   } else {
     audio.pause();
-    icon.classList.remove("playing");
-    tapHint.style.display = "block";
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const namaTamu = getQueryParam("to");
-  const salam = document.getElementById("salam-tamu");
-  if (namaTamu && salam) {
-    salam.innerText = `Yth. Bapak/Ibu/Saudara/i ${decodeURIComponent(namaTamu)}`;
-  }
-
-  // Jangan autoplay apapun, user harus klik ikon
-  const audio = document.getElementById("bg-music");
-  const icon = document.getElementById("music-icon");
-  const tapHint = document.getElementById("tap-to-play");
-
-  // Biar tombol play juga bisa dari klik pertama (untuk pengguna awam yang tap layar)
-  function allowPlay() {
-    if (audio.paused) {
-      audio.play().then(() => {
-        icon.classList.add("playing");
-        tapHint.style.display = "none";
-      }).catch(() => {
-        console.log("User perlu klik ikon untuk memutar");
-      });
-    }
-    document.removeEventListener("click", allowPlay);
-  }
-
-  document.addEventListener("click", allowPlay);
-});
